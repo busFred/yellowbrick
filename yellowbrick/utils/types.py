@@ -18,11 +18,11 @@ Detection utilities for Scikit-Learn and Numpy types for flexibility
 ##########################################################################
 
 import inspect
-import numpy as np
 
+import cuml.internals.base
+import numpy as np
 from sklearn.base import BaseEstimator
 from yellowbrick.contrib.wrapper import ContribEstimator
-
 
 ##########################################################################
 ## Model Type checking utilities
@@ -40,9 +40,13 @@ def is_estimator(model):
         Scikit-Learn estimator or Yellowbrick visualizer
     """
     if inspect.isclass(model):
-        return issubclass(model, (BaseEstimator, ContribEstimator))
+        return issubclass(
+            model, (BaseEstimator, ContribEstimator, cuml.internals.base.Base)
+        )
 
-    return isinstance(model, (BaseEstimator, ContribEstimator))
+    return isinstance(
+        model, (BaseEstimator, ContribEstimator, cuml.internals.base.Base)
+    )
 
 
 # Alias for closer name to isinstance and issubclass
